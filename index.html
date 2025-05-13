@@ -33,6 +33,16 @@
   <div class="result" id="result"></div>
 
   <script>
+    // 🟢 預設今天日期
+    window.onload = function () {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const formattedToday = `${yyyy}-${mm}-${dd}`;
+      document.getElementById('startDate').value = formattedToday;
+    };
+
     function calculateDate() {
       const startDateInput = document.getElementById('startDate').value;
       const daysToAdd = parseInt(document.getElementById('daysToAdd').value, 10);
@@ -45,11 +55,11 @@
       const startDate = new Date(startDateInput);
       startDate.setDate(startDate.getDate() + daysToAdd);
 
-      const resultDate = startDate.toISOString().split('T')[0]; // 格式化成 YYYY-MM-DD
+      const resultDate = startDate.toISOString().split('T')[0];
       document.getElementById('result').textContent = `${daysToAdd} 天後的日期是：${resultDate}`;
     }
 
-    // 🔽 新增這段：按下 Enter 執行
+    // 🔽 按 Enter 鍵觸發計算
     document.getElementById('daysToAdd').addEventListener('keydown', function(event) {
       if (event.key === 'Enter') {
         calculateDate();
