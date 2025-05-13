@@ -25,7 +25,7 @@
   <label for="startDate">請選擇一個起始日期：</label>
   <input type="date" id="startDate">
 
-  <label for="daysToAdd">請輸入要加上的天數（整數，可輸入負數）：</label>
+  <label for="daysToAdd">請輸入要加上的天數（整數）：</label>
   <input type="number" id="daysToAdd" placeholder="例如：7">
 
   <button onclick="calculateDate()">計算日期</button>
@@ -35,25 +35,26 @@
   <script>
     function calculateDate() {
       const startDateInput = document.getElementById('startDate').value;
-      const daysInput = parseInt(document.getElementById('daysToAdd').value, 10);
-      const resultDiv = document.getElementById('result');
+      const daysToAdd = parseInt(document.getElementById('daysToAdd').value, 10);
 
-      if (!startDateInput || isNaN(daysInput)) {
-        resultDiv.textContent = '請輸入有效的日期和天數。';
-        resultDiv.style.color = 'red';
+      if (!startDateInput || isNaN(daysToAdd)) {
+        document.getElementById('result').textContent = '請輸入有效的日期和天數';
         return;
       }
 
       const startDate = new Date(startDateInput);
-      startDate.setDate(startDate.getDate() + daysInput);
+      startDate.setDate(startDate.getDate() + daysToAdd);
 
-      const year = startDate.getFullYear();
-      const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = startDate.getDate().toString().padStart(2, '0');
-
-      resultDiv.textContent = `計算結果：${year}-${month}-${day}`;
-      resultDiv.style.color = 'green';
+      const resultDate = startDate.toISOString().split('T')[0]; // 格式化成 YYYY-MM-DD
+      document.getElementById('result').textContent = `${daysToAdd} 天後的日期是：${resultDate}`;
     }
+
+    // 🔽 新增這段：按下 Enter 執行
+    document.getElementById('daysToAdd').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        calculateDate();
+      }
+    });
   </script>
 </body>
 </html>
