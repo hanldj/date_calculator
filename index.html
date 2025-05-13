@@ -25,15 +25,15 @@
   <label for="startDate">請選擇一個起始日期：</label>
   <input type="date" id="startDate">
 
-  <label for="daysToAdd">請輸入要加上的天數（整數）：</label>
-  <input type="number" id="daysToAdd" placeholder="例如：7">
+  <label for="daysToAdd">請輸入要加上的天數（可正可負）：</label>
+  <input type="number" id="daysToAdd" placeholder="例如：7 或 -3">
 
   <button onclick="calculateDate()">計算日期</button>
 
   <div class="result" id="result"></div>
 
   <script>
-    // 🟢 預設今天日期
+    // 預設今天日期
     window.onload = function () {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -43,6 +43,7 @@
       document.getElementById('startDate').value = formattedToday;
     };
 
+    // 核心計算函式
     function calculateDate() {
       const startDateInput = document.getElementById('startDate').value;
       const daysToAdd = parseInt(document.getElementById('daysToAdd').value, 10);
@@ -54,12 +55,22 @@
 
       const startDate = new Date(startDateInput);
       startDate.setDate(startDate.getDate() + daysToAdd);
-
       const resultDate = startDate.toISOString().split('T')[0];
-      document.getElementById('result').textContent = `${daysToAdd} 天後的日期是：${resultDate}`;
+
+      // 顯示文字依據天數變化
+      let resultText = '';
+      if (daysToAdd === 0) {
+        resultText = `今天是：${resultDate}`;
+      } else if (daysToAdd > 0) {
+        resultText = `${daysToAdd} 天後的日期是：${resultDate}`;
+      } else {
+        resultText = `${Math.abs(daysToAdd)} 天前的日期是：${resultDate}`;
+      }
+
+      document.getElementById('result').textContent = resultText;
     }
 
-    // 🔽 按 Enter 鍵觸發計算
+    // 按下 Enter 也能計算
     document.getElementById('daysToAdd').addEventListener('keydown', function(event) {
       if (event.key === 'Enter') {
         calculateDate();
